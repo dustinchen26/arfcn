@@ -1,0 +1,108 @@
+<!-- 
+  Copyright © [2023] [Dustin_Chen]. All rights reserved.
+  Author: Dustin_Chen
+  Email:  Dustin_Chen@compal.com or chuhpsdustin@gmail.com
+-->  
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NR_arfcn_calculator</title>
+    <style>
+        * {
+            margin: 1;
+            padding: 1;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        /* 調整每一行上下間距 */
+        p, h1, h3 {
+            margin: 0.4em 0;
+        }
+
+        /* freq to arfcn 樣式 */
+        button {
+            display: inline-block;
+            margin-top: -5px;
+        }
+        input {
+            width: 80px;
+        }
+        #result1, #result2 {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        /* 作者資訊樣式 */
+        .author-info {
+            display: inline;
+            margin-right: 10px;
+        }
+    </style>	
+</head>
+<body>
+    <h1>NR_arfcn_calculator</h1>
+    <p class="author-info">Author: Dustin Chen</p>
+    <p class="author-info">Email: <a href="mailto:Dustin_Chen@compal.com">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com">chuhpsdustin@gmail.com</a></p>
+	<br><br>
+	<p>Ref: ETSI TS 138 101-1 chap 5.4.2.1 NR-ARFCN and channel raster</p>
+	<img src="https://raw.githubusercontent.com/dustinchen26/arfcn/master/formula.png" alt="GitHub Image" >
+	<br><br>
+    <h3>(1) freq to arfcn</h3>
+    <label for="freq1">&nbsp; &nbsp; &nbsp; freq(Hz):</label>
+    <input type="text" id="freq1">
+    <button onclick="calculateFreqToARFCN()">Calculate</button>
+    <p id="result1"></p>
+
+    <h3>(2) arfcn to freq</h3>
+    <label for="arfcn">&nbsp; &nbsp; &nbsp; arfcn:</label>
+    <input type="text" id="arfcn">
+    <button onclick="calculateARFCNToFreq()">Calculate</button>
+    <p id="result2"></p>
+
+    <script>
+        function calculateFreqToARFCN() {
+            var freq = parseFloat(document.getElementById("freq1").value);
+            var result1 = document.getElementById("result1");
+
+            if (!isNaN(freq)) {
+                if (freq <= 3000000) {
+                    arfcn_calculated = (freq - 0) / 5 + 0;
+                } else if (freq <= 24250000) {
+                    arfcn_calculated = (freq - 3000000) / 15 + 600000;
+                } else {
+                    result1.innerHTML = "Frequency is out of range";
+                    return;
+                }
+
+                result1.innerHTML = "arfcn = " + arfcn_calculated.toFixed(2);
+            } else {
+                result1.innerHTML = "Invalid input. Please enter a valid value.";
+            }
+        }
+
+        function calculateARFCNToFreq() {
+            var arfcn = parseInt(document.getElementById("arfcn").value);
+            var result2 = document.getElementById("result2");
+
+            if (!isNaN(arfcn)) {
+                if (arfcn <= 599999) {
+                    freq_calculated = 0 + 5 * (arfcn - 0);
+                } else if (arfcn <= 2016666) {
+                    freq_calculated = 3000000 + 15 * (arfcn - 600000);
+                } else {
+                    result2.innerHTML = "arfcn is out of range";
+                    return;
+                }
+
+                result2.innerHTML = "freq = " + freq_calculated.toFixed(2) + " Hz";
+            } else {
+                result2.innerHTML = "Invalid input. Please enter a valid value.";
+            }
+        }
+    </script>
+</body>
+</html>
