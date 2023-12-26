@@ -2,24 +2,24 @@
   Copyright © [2023] [Dustin_Chen]. All rights reserved.
   Author: Dustin_Chen
   Email:  Dustin_Chen@compal.com or chuhpsdustin@gmail.com
--->  
+-->
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>NR_arfcn_calculator</title>
     <style>
-        * {
-            margin: 1;
-            padding: 1;
-        }
-
         body {
+            font-family: 'Roboto', sans-serif;
             line-height: 1;
+            font-size: 14px;
         }
 
         /* 調整每一行上下間距 */
-        p, h1, h3 {
+        p,
+        h1,
+        h3 {
             margin: 0.4em 0;
         }
 
@@ -28,40 +28,65 @@
             display: inline-block;
             margin-top: -5px;
         }
+
         input {
             width: 80px;
         }
-        #result1, #result2 {
+
+        #result1,
+        #result2 {
             display: inline-block;
             margin-left: 10px;
         }
 
-        /* 作者資訊樣式 */
         .author-info {
             display: inline;
             margin-right: 10px;
         }
-    </style>	
+    </style>
 </head>
-<body>
-    <h1>NR_arfcn_calculator</h1>
-    <p class="author-info">Author: Dustin Chen</p>
-    <p class="author-info">Email: <a href="mailto:Dustin_Chen@compal.com">Dustin_Chen@compal.com</a> or <a href="mailto:chuhpsdustin@gmail.com">chuhpsdustin@gmail.com</a></p>
-	<br><br>
-	<p>Ref: ETSI TS 138 101-1 chap 5.4.2.1 NR-ARFCN and channel raster</p>
-	<img src="https://raw.githubusercontent.com/dustinchen26/arfcn/master/formula.png" alt="GitHub Image" width="600">
-	<br><br>
-    <h3>(1) freq to arfcn</h3>
-    <label for="freq1">&nbsp; &nbsp; &nbsp; freq(kHz):</label>
-    <input type="text" id="freq1">
-    <button onclick="calculateFreqToARFCN()">Calculate</button>
-    <p id="result1"></p>
 
-    <h3>(2) arfcn to freq</h3>
-    <label for="arfcn">&nbsp; &nbsp; &nbsp; arfcn:</label>
-    <input type="text" id="arfcn">
-    <button onclick="calculateARFCNToFreq()">Calculate</button>
-    <p id="result2"></p>
+<body>
+    <h2>NR_arfcn_calculator</h2>
+    <p class="author-info">Author: Dustin Chen</p>
+    <p class="author-info">Email: <a href="mailto:Dustin_Chen@compal.com">Dustin_Chen@compal.com</a> or <a
+            href="mailto:chuhpsdustin@gmail.com">chuhpsdustin@gmail.com</a></p>
+
+    <ul>
+        <li><strong>Spec</strong>
+            <ul>
+                <li>
+                    <p>Ref: ETSI TS 138 101-1 chap 5.4.2.1 NR-ARFCN and channel raster</p>
+                    <img src="https://raw.githubusercontent.com/dustinchen26/arfcn/master/formula.png"
+                        alt="GitHub Image" width="600">
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul>
+        <li><strong>freq to arfcn</strong>
+            <ul>
+                <li>
+                    <label for="freq1">freq(kHz):</label>
+                    <input type="text" id="freq1" value="3603840">
+                    <button onclick="calculateFreqToARFCN()">Calculate</button>
+                    <p id="result1"></p>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul>
+        <li><strong>arfcn to freq</strong>
+            <ul>
+                <li>
+                    <label for="arfcn">arfcn:</label>
+                    <input type="text" id="arfcn" value="640256">
+                    <button onclick="calculateARFCNToFreq()">Calculate</button>
+                    <p id="result2"></p>
+                </li>
+            </ul>
+        </li>
+    </ul>
 
     <script>
         function calculateFreqToARFCN() {
@@ -78,7 +103,7 @@
                     return;
                 }
 
-                result1.innerHTML = "arfcn = " + arfcn_calculated.toFixed(2);
+                result1.innerHTML = "arfcn = " + arfcn_calculated.toFixed(0);
             } else {
                 result1.innerHTML = "Invalid input. Please enter a valid value.";
             }
@@ -98,11 +123,12 @@
                     return;
                 }
 
-                result2.innerHTML = "freq = " + freq_calculated.toFixed(2) + " Hz";
+                result2.innerHTML = "freq = " + freq_calculated.toFixed(0) + " Hz";
             } else {
                 result2.innerHTML = "Invalid input. Please enter a valid value.";
             }
         }
     </script>
 </body>
+
 </html>
