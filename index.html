@@ -43,6 +43,10 @@
             display: inline;
             margin-right: 10px;
         }
+
+        .calculation-info {
+            margin-top: 5px;
+        }
     </style>
 </head>
 
@@ -71,6 +75,7 @@
                     <input type="text" id="freq1" value="3603840">
                     <button onclick="calculateFreqToARFCN()">Calculate</button>
                     <p id="result1"></p>
+                    <p id="calculation-info1" class="calculation-info"></p>
                 </li>
             </ul>
         </li>
@@ -83,6 +88,7 @@
                     <input type="text" id="arfcn" value="640256">
                     <button onclick="calculateARFCNToFreq()">Calculate</button>
                     <p id="result2"></p>
+                    <p id="calculation-info2" class="calculation-info"></p>
                 </li>
             </ul>
         </li>
@@ -92,43 +98,54 @@
         function calculateFreqToARFCN() {
             var freq = parseFloat(document.getElementById("freq1").value);
             var result1 = document.getElementById("result1");
+            var calculationInfo1 = document.getElementById("calculation-info1");
 
             if (!isNaN(freq)) {
                 if (freq <= 3000000) {
                     arfcn_calculated = (freq - 0) / 5 + 0;
+                    calculationInfo1.innerHTML = "ARFCN = (freq - 0) / 5 + 0 = (" + freq + " - 0) / 5 + 0 = " + arfcn_calculated.toFixed(0);
                 } else if (freq <= 24250000) {
                     arfcn_calculated = (freq - 3000000) / 15 + 600000;
+                    calculationInfo1.innerHTML = "ARFCN = (freq - 3000000) / 15 + 600000 = (" + freq + " - 3000000) / 15 + 600000 = " + arfcn_calculated.toFixed(0);
                 } else {
                     result1.innerHTML = "Frequency is out of range";
+                    calculationInfo1.innerHTML = "";
                     return;
                 }
 
-                result1.innerHTML = "arfcn = " + arfcn_calculated.toFixed(0);
+                result1.innerHTML = "ARFCN = " + arfcn_calculated.toFixed(0);
             } else {
                 result1.innerHTML = "Invalid input. Please enter a valid value.";
+                calculationInfo1.innerHTML = "";
             }
         }
 
         function calculateARFCNToFreq() {
             var arfcn = parseInt(document.getElementById("arfcn").value);
             var result2 = document.getElementById("result2");
+            var calculationInfo2 = document.getElementById("calculation-info2");
 
             if (!isNaN(arfcn)) {
                 if (arfcn <= 599999) {
                     freq_calculated = 0 + 5 * (arfcn - 0);
+                    calculationInfo2.innerHTML = "Freq = 0 + 5 * (ARFCN - 0) = 0 + 5 * (" + arfcn + " - 0) = " + freq_calculated.toFixed(0) + " Hz";
                 } else if (arfcn <= 2016666) {
                     freq_calculated = 3000000 + 15 * (arfcn - 600000);
+                    calculationInfo2.innerHTML = "Freq = 3000000 + 15 * (ARFCN - 600000) = 3000000 + 15 * (" + arfcn + " - 600000) = " + freq_calculated.toFixed(0) + " Hz";
                 } else {
-                    result2.innerHTML = "arfcn is out of range";
+                    result2.innerHTML = "ARFCN is out of range";
+                    calculationInfo2.innerHTML = "";
                     return;
                 }
 
-                result2.innerHTML = "freq = " + freq_calculated.toFixed(0) + " Hz";
+                result2.innerHTML = "Freq = " + freq_calculated.toFixed(0) + " Hz";
             } else {
                 result2.innerHTML = "Invalid input. Please enter a valid value.";
+                calculationInfo2.innerHTML = "";
             }
         }
     </script>
 </body>
 
 </html>
+
