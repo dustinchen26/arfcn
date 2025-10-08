@@ -1,9 +1,3 @@
-<!-- 
-  Copyright © [2023] [Dustin_Chen]. All rights reserved.
-  Author: Dustin_Chen
-  Email:  Dustin_Chen@compal.com or chuhpsdustin@gmail.com
--->
-
 <!DOCTYPE html>
 <html>
 
@@ -14,6 +8,9 @@
             font-family: 'Roboto', sans-serif;
             line-height: 1;
             font-size: 14px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         /* 調整每一行上下間距 */
@@ -27,16 +24,30 @@
         button {
             display: inline-block;
             margin-top: -5px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
 
         input {
-            width: 80px;
+            width: 120px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
 
         #result1,
         #result2 {
             display: inline-block;
             margin-left: 10px;
+            font-weight: bold;
         }
 
         .author-info {
@@ -46,6 +57,31 @@
 
         .calculation-info {
             margin-top: 5px;
+            color: #555;
+            font-style: italic;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -53,26 +89,27 @@
 <body>
     <h2>NR_arfcn_freq_convert</h2>
     <p class="author-info">Author: Dustin Chen</p>
-    <p class="author-info">Email: <a href="mailto:Dustin_Chen@compal.com">Dustin_Chen@compal.com</a> or <a
+    <p class="author-info">mail: <a href="mailto:Dustin_Chen@compal.com">Dustin_Chen@compal.com</a> or <a
             href="mailto:chuhpsdustin@gmail.com">chuhpsdustin@gmail.com</a></p>
 
     <ul>
-        <li><strong>Spec</strong>
+        <li><strong>description</strong>
             <ul>
                 <li>
-                    <p>Ref: ETSI TS 138 101-1 chap 5.4.2.1 NR-ARFCN and channel raster</p>
+                    <p>refer: ETSI TS 138 101-1 Table 5.4.2.1-1: NR-ARFCN parameters for the global frequency raster </p>
                     <img src="https://raw.githubusercontent.com/dustinchen26/arfcn/master/formula.png"
                         alt="GitHub Image" width="600">
                 </li>
-                <li>ex: n41 => freq range [2496000, 2690000] kHz, arfcn range [499200, 538000]</li>
-                <li>ex: n48 => freq range [3550000, 3700000] kHz, arfcn range [636667, 646667]</li>
-                <li>ex: n78 => freq range [3300000, 3800000] kHz, arfcn range [620000, 653333]</li>
-                <li>ex: n79 => freq range [4400000, 5000000] kHz, arfcn range [693333, 733333]</li>
+                <li>ex: n41 => freq range=[2496000, 2690000] kHz, arfcn range=[499200, 538000]</li>
+                <li>ex: n48 => freq range=[3550000, 3700000] kHz, arfcn range=[636667, 646667]</li>
+                <li>ex: n78 => freq range=[3300000, 3800000] kHz, arfcn range=[620000, 653333]</li>
+                <li>ex: n79 => freq range=[4400000, 5000000] kHz, arfcn range=[693333, 733333]</li>
             </ul>
         </li>
     </ul>
+    
     <ul>
-        <li><strong>freq to arfcn</strong>
+        <li><strong>freq to arfcn converter</strong>
             <ul>
                 <li>
                     <label for="freq1">freq(kHz):</label>
@@ -84,11 +121,12 @@
             </ul>
         </li>
     </ul>
+    
     <ul>
-        <li><strong>arfcn to freq</strong>
+        <li><strong>arfcn to freq converter</strong>
             <ul>
                 <li>
-                    <label for="arfcn">arfcn:</label>
+                    <label for="arfcn">ARFCN:</label>
                     <input type="text" id="arfcn" value="640256">
                     <button onclick="calculateARFCNToFreq()">Calculate</button>
                     <p id="result2"></p>
@@ -105,23 +143,32 @@
             var calculationInfo1 = document.getElementById("calculation-info1");
 
             if (!isNaN(freq)) {
+                let arfcn_calculated;
+                
                 if (freq <= 3000000) {
+                    // 範圍 1: 0 - 3000 MHz
                     arfcn_calculated = (freq - 0) / 5 + 0;
                     calculationInfo1.innerHTML = "ARFCN = (freq - 0) / 5 + 0 = (" + freq + " - 0) / 5 + 0 = " +
                         arfcn_calculated.toFixed(0);
                 } else if (freq <= 24250000) {
+                    // 範圍 2: 3000 - 24250 MHz
                     arfcn_calculated = (freq - 3000000) / 15 + 600000;
                     calculationInfo1.innerHTML = "ARFCN = (freq - 3000000) / 15 + 600000 = (" + freq +
                         " - 3000000) / 15 + 600000 = " + arfcn_calculated.toFixed(0);
+                } else if (freq <= 100000000) {
+                    // 範圍 3: 24250 - 100000 MHz
+                    arfcn_calculated = (freq - 24250080) / 60 + 2016667;
+                    calculationInfo1.innerHTML = "ARFCN = (freq - 24250080) / 60 + 2016667 = (" + freq +
+                        " - 24250080) / 60 + 2016667 = " + arfcn_calculated.toFixed(0);
                 } else {
-                    result1.innerHTML = "Frequency is out of range";
+                    result1.innerHTML = "freq超出範圍";
                     calculationInfo1.innerHTML = "";
                     return;
                 }
 
                 result1.innerHTML = "ARFCN = " + arfcn_calculated.toFixed(0);
             } else {
-                result1.innerHTML = "Invalid input. Please enter a valid value.";
+                result1.innerHTML = "輸入無效，請輸入有效數值";
                 calculationInfo1.innerHTML = "";
             }
         }
@@ -132,23 +179,32 @@
             var calculationInfo2 = document.getElementById("calculation-info2");
 
             if (!isNaN(arfcn)) {
+                let freq_calculated;
+                
                 if (arfcn <= 599999) {
+                    // 範圍 1: ARFCN 0 - 599999
                     freq_calculated = 0 + 5 * (arfcn - 0);
-                    calculationInfo2.innerHTML = "Freq = 0 + 5 * (ARFCN - 0) = 0 + 5 * (" + arfcn + " - 0) = " +
-                        freq_calculated.toFixed(0) + " Hz";
+                    calculationInfo2.innerHTML = "freq = 0 + 5 * (ARFCN - 0) = 0 + 5 * (" + arfcn + " - 0) = " +
+                        freq_calculated.toFixed(0) + " kHz";
                 } else if (arfcn <= 2016666) {
+                    // 範圍 2: ARFCN 600000 - 2016666
                     freq_calculated = 3000000 + 15 * (arfcn - 600000);
-                    calculationInfo2.innerHTML = "Freq = 3000000 + 15 * (ARFCN - 600000) = 3000000 + 15 * (" + arfcn +
-                        " - 600000) = " + freq_calculated.toFixed(0) + " Hz";
+                    calculationInfo2.innerHTML = "freq = 3000000 + 15 * (ARFCN - 600000) = 3000000 + 15 * (" + arfcn +
+                        " - 600000) = " + freq_calculated.toFixed(0) + " kHz";
+                } else if (arfcn <= 3279165) {
+                    // 範圍 3: ARFCN 2016667 - 3279165
+                    freq_calculated = 24250080 + 60 * (arfcn - 2016667);
+                    calculationInfo2.innerHTML = "freq = 24250080 + 60 * (ARFCN - 2016667) = 24250080 + 60 * (" + arfcn +
+                        " - 2016667) = " + freq_calculated.toFixed(0) + " kHz";
                 } else {
-                    result2.innerHTML = "ARFCN is out of range";
+                    result2.innerHTML = "ARFCN 超出範圍";
                     calculationInfo2.innerHTML = "";
                     return;
                 }
 
-                result2.innerHTML = "Freq = " + freq_calculated.toFixed(0) + " Hz";
+                result2.innerHTML = "freq = " + freq_calculated.toFixed(0) + " kHz";
             } else {
-                result2.innerHTML = "Invalid input. Please enter a valid value.";
+                result2.innerHTML = "輸入無效，請輸入有效數值";
                 calculationInfo2.innerHTML = "";
             }
         }
